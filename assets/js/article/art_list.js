@@ -154,27 +154,25 @@ $(function () {
       layer.close(index);
     });
   })
-
-  // 初始化富文本编辑器
-  initEditor();
-
-  // 1.1 初始化图片裁剪器
-  var $image = $('#image')
-
-  // 1.2 裁剪选项
-  var options = {
-    aspectRatio: 400 / 280,
-    preview: '.img-preview'
-  }
-
-  // 1.3 初始化裁剪区域
-  $image.cropper(options)
-
+  var $image;
   // 通过代理的形式，为编辑按钮绑定点击事件处理函数
   $('tbody').on('click', '.btn-edit', function () {
     //$('#edit').css('display', 'block');
     $('#edit').show();
     $('#noEdit').hide();
+
+    // 初始化富文本编辑器
+    initEditor();
+
+    // 1.1 初始化图片裁剪器
+    $image = $('#image')
+    // 1.2 裁剪选项
+    var options = {
+      aspectRatio: 400 / 280,
+      preview: '.img-preview'
+    }
+    // 1.3 初始化裁剪区域
+    $image.cropper(options)
 
     var id = $(this).attr('data-id');
     $.ajax({
@@ -188,7 +186,6 @@ $(function () {
 
         // 1.4 根据文件，创建对应的 URL 地址
         var newImgURL = 'http://ajax.frontend.itheima.net' + res.data.cover_img;
-
         // 1.5 为裁剪区域重新设置图片
         $image
           .cropper('destroy')      // 销毁旧的裁剪区域
@@ -235,9 +232,6 @@ $(function () {
     e.preventDefault();
     // 2. 基于 form 表单，快速创建一个 FormDate 对象
     var fd = new FormData($(this)[0]);
-    fd.forEach(function (k, v) {
-      console.log(k, v)
-    })
     // 3. 将文章的发布状态，存到 fd 中
     fd.append('state', art_state)
 
